@@ -70,15 +70,14 @@ def BA_iterations(
         pU_M: np.ndarray, 
         q_init: np.ndarray, 
         beta: float, 
-        num_iter: int = 50, 
-        temperature: float = 1):
+        num_iter: int = 50):
     """
-    pM : Distribution on M, of shape M.
-    pU_M : Conditional distribution on U given M, of shape M x U.
-    q_init : Initial conditional distribution on W given M, of shape M x W.
-    beta : A non-negative scalar value.
-    Output: 
-    pW_M : Conditional distribution on W given M, of shape M x W.
+    :param pM : Distribution on M, of shape M.
+    :param pU_M : Conditional distribution on U given M, of shape M x U.
+    :param q_init : Initial conditional distribution on W given M, of shape M x W.
+    :param beta : A non-negative scalar value.
+    :param num_iter : The number of iterations for the Blahut-Arimoto algorithm.
+    :return: pW_M : Conditional distribution on W given M, of shape M x W.
     """
 
     pW_M = q_init
@@ -98,6 +97,6 @@ def BA_iterations(
         dkl_nats = dkl * np.log(2)
 
         # update pW_M 
-        pW_M = softmax(np.log(pW + PRECISION) - beta * dkl_nats, axis=-1)
+        pW_M = softmax(np.log(pW) - beta * dkl_nats, axis=-1)
 
     return pW_M
